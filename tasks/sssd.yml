@@ -17,6 +17,15 @@
     owner: root
     group: root
 
+- name: ensure sssd.conf file exists
+  become: true
+  file:
+    state: touch
+    path: /etc/sssd/sssd.conf
+    mode: 0600
+    owner: root
+    group: root
+
 - name: create domain sssd config file
   become: true
   template:
