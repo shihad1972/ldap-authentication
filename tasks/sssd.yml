@@ -1,0 +1,70 @@
+---
+- name: ensure sssd is installed
+  become: true
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - sssd
+    - sssd-ldap
+
+- name: ensure conf.d directory exists for sssd
+  become: true
+  file:
+    state: directory
+    path: /etc/sssd/conf.d/
+    mode: 0700
+    owner: root
+    group: root
+
+- name: create domain sssd config file
+  become: true
+  template:
+    dest: "/etc/sssd/conf.d/{{ domain }}.conf"
+    owner: root
+    group: root
+    mode: 0600
+    src: sssd.conf.j2
+  notify: restart sssd
+  when: not do_ssl
+
+- name: create domain sssd SSL config file
+  become: true
+  template:
+    dest: "/etc/sssd/conf.d/{{ domain }}.conf"
+    owner: root
+    group: root
+    mode: 0600
+    src: sssd.conf-ssl.j2
+  notify: restart sssd
+  when: do_ssl
+
+- name: add main block to sssd.conf file
+  become: true
+  blockinfile:
+    dest: /etc/sssd/sssd.conf
+    content: |
+      [sssd]
+      config_file_version = 2
+      services = nss, pam, ssh, sudo
+      domains = {{ domain }}
+
+      [nss]
+
+      [pam]
+
+      [sudo]
+  notify: restart sssd
+  when: do_sssd == 'single'
+
+- name: add domain into main sssd config
+  become: true
+  lineinfile:
+    dest: /etc/sssd/sssd.conf
+    backup: true
+    backrefs: true
+    state: present
+    regexp: '(^domains\s*=\s*((?!{{ domain }}) [\w\-\.]+)*)\s*$'
+    line: '\1, {{ domain }}'
+  notify: restart sssd
+  when: do_sssd == 'multiple'

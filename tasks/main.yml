@@ -1,2 +1,4 @@
 ---
 # tasks file for ldap-authentication
+
+- import_tasks: sssd.yml
