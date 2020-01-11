@@ -3,7 +3,7 @@ id_provider = ldap
 auth_provider = ldap
 ldap_schema = rfc2307
 ldap_search_base = {{ domain_dn }}
-ldap_uri = ldap://{{ ldap_server | default(ansible_fqdn) }}
+ldap_uri = ldap://{{ ldap_server | default(my_fqdn) }}
 {% if ldap_service_accounts.sssd_bind_acc is defined %}
 ldap_default_bind_dn = cn=sssd_bind_acc,ou={{ service_ou }},{{ domain_dn }}
 ldap_default_authtok = {{ ldap_service_accounts.sssd_bind_acc }}

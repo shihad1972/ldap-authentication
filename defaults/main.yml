@@ -2,3 +2,4 @@
 # defaults file for ldap-authentication
 
 do_sssd: single
+my_fqdn: "{{ ansible_fqdn }}"
