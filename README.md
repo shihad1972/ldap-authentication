@@ -20,6 +20,7 @@ Role Variables
   - do_bind: Boolean. Enable SSSD to bind to the directory as a user instead of anonymous binds.
       - sssd_bind_user: DN of the user to bind as
       - sssd_bind_pass: Password of the user
+  - run_handlers: Set to False if you do not want to restart SSSD after configuration.
   
 Dependencies
 ------------
