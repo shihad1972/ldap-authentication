@@ -70,3 +70,12 @@
     line: '\1, {{ domain }}'
   notify: restart sssd
   when: do_sssd == 'multiple'
+
+- name: set permissions on sssd.conf
+  become: true
+  file:
+    path: /etc/sssd/sssd.conf
+    mode: 0600
+    owner: root
+    group: root
+    state: file
