@@ -1,4 +1,5 @@
 ---
+
 - name: ensure sssd is installed
   become: true
   package:
@@ -14,15 +15,6 @@
     state: directory
     path: /etc/sssd/conf.d/
     mode: 0700
-    owner: root
-    group: root
-
-- name: ensure sssd.conf file exists
-  become: true
-  file:
-    state: touch
-    path: /etc/sssd/sssd.conf
-    mode: 0600
     owner: root
     group: root
 
@@ -52,6 +44,7 @@
   become: true
   blockinfile:
     dest: /etc/sssd/sssd.conf
+    create: true
     content: |
       [sssd]
       config_file_version = 2

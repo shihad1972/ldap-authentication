@@ -1,4 +1,4 @@
-Role Name
+ldap-authentication
 =========
 
 A brief description of the role goes here.
@@ -6,17 +6,25 @@ A brief description of the role goes here.
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+ Setup SSSD  to allow for ldap authentication
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
+  - domain: DNS FQDN of the domain to configure in sssd
+  - ldap_host_name: FQDN of the ldap server
+  - domain_dn: Base domain dn in the directory to search for users.
+  - do_ssl: enable SSL connection to the LDAP directory
+  - do_sssd: single|multiple - enable a single or multiple domains for authentication. If there is already
+      a domain configured on the target host, use multiple. This defaults to single. 
+  - do_bind: Boolean. Enable SSSD to bind to the directory as a user instead of anonymous binds.
+      - sssd_bind_user: DN of the user to bind as
+      - sssd_bind_pass: Password of the user
+  
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+ There needs to be a working LDAP directory for this role to function correctly. There are no other external dependencies.
 
 Example Playbook
 ----------------
@@ -24,15 +32,19 @@ Example Playbook
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
     - hosts: servers
+      vars:
+        do_bind: no
+        domain: example.net
+        domain_dn: dc=example,dc=net
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: ldap-authentication,  }
 
 License
 -------
 
-BSD
+GPLv3
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Iain M Conochie <iain@tharoid.co.uk>
