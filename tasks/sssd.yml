@@ -27,7 +27,7 @@
     mode: 0600
     src: sssd.conf.j2
   notify: restart sssd
-  when: not do_ssl
+  when: not do_ssl|bool
 
 - name: create domain sssd SSL config file
   become: true
@@ -38,7 +38,7 @@
     mode: 0600
     src: sssd.conf-ssl.j2
   notify: restart sssd
-  when: do_ssl
+  when: do_ssl|bool
 
 - name: add main block to sssd.conf file
   become: true
