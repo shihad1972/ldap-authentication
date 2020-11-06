@@ -1,4 +1,5 @@
 ---
+
 - name: ensure sssd is installed
   become: true
   package:
@@ -17,15 +18,6 @@
     owner: root
     group: root
 
-- name: ensure sssd.conf file exists
-  become: true
-  file:
-    state: touch
-    path: /etc/sssd/sssd.conf
-    mode: 0600
-    owner: root
-    group: root
-
 - name: create domain sssd config file
   become: true
   template:
@@ -35,7 +27,7 @@
     mode: 0600
     src: sssd.conf.j2
   notify: restart sssd
-  when: not do_ssl
+  when: not do_ssl|bool
 
 - name: create domain sssd SSL config file
   become: true
@@ -52,6 +44,7 @@
   become: true
   blockinfile:
     dest: /etc/sssd/sssd.conf
+    create: true
     content: |
       [sssd]
       config_file_version = 2
@@ -77,3 +70,12 @@
     line: '\1, {{ domain }}'
   notify: restart sssd
   when: do_sssd == 'multiple'
+
+- name: set permissions on sssd.conf
+  become: true
+  file:
+    path: /etc/sssd/sssd.conf
+    mode: 0600
+    owner: root
+    group: root
+    state: file

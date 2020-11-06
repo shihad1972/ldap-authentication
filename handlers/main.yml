@@ -6,3 +6,4 @@
   service:
     name: sssd
     state: restarted
+  when: run_handlers|bool
