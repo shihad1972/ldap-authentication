@@ -56,6 +56,12 @@
       [pam]
 
       [sudo]
+
+      [ssh]
+    {% if do_auth_keys is sames true %}
+      ssh_use_certificate_keys = true
+    {% endif %}
+
   notify: restart sssd
   when: do_sssd == 'single'
 

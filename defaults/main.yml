@@ -6,3 +6,4 @@ my_fqdn: "{{ ansible_fqdn }}"
 ldap_host_name: "{{ my_fqdn }}"
 domain: "{{ my_fqdn }}"
 run_handlers: True
+do_auth_keys: False
