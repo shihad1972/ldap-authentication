@@ -58,7 +58,7 @@
       [sudo]
 
       [ssh]
-    {% if do_auth_keys is sames true %}
+    {% if do_auth_keys is sameas true %}
       ssh_use_certificate_keys = true
     {% endif %}
 
