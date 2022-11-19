@@ -3,7 +3,7 @@ id_provider = ldap
 auth_provider = ldap
 ldap_schema = rfc2307
 ldap_search_base = {{ domain_dn }}
-ldap_uri = ldaps://{{ ldap_host_name | default(my_fqdn) }}
+ldap_uri = ldaps://{{ ldap_hostname | default(my_fqdn) }}
 {% if do_bind is sameas true %}
 ldap_default_bind_dn = {{ sssd_bind_dn }}
 ldap_default_authtok = {{ sssd_bind_pass }}
