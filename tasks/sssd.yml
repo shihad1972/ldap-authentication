@@ -8,6 +8,7 @@
   loop:
     - sssd
     - sssd-ldap
+    - ldap-utils
 
 - name: ensure conf.d directory exists for sssd
   become: true
